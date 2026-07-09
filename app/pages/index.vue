@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Product } from "~/composables/useCatalog";
+
 const {
   categories,
   products,
@@ -10,6 +12,10 @@ const {
   setSelectedCategory,
 } = useCatalog();
 
+const { itemCount } = useCart();
+
+const selectedProduct = ref<Product | null>(null);
+
 const homeSelectedCategory = computed(
   () => selectedCategory.value ?? categories[0],
 );
@@ -19,10 +25,16 @@ const homeVisibleProducts = computed(() => {
     return visibleProducts.value;
   }
 
-  return products.filter(
-    (product) => product.categoryId === categories[0]?.id,
-  );
+  return products.filter((product) => product.categoryId === categories[0]?.id);
 });
+
+const openProductDetails = (product: Product) => {
+  selectedProduct.value = product;
+};
+
+const closeProductDetails = () => {
+  selectedProduct.value = null;
+};
 </script>
 
 <template>
@@ -58,7 +70,7 @@ const homeVisibleProducts = computed(() => {
           <span class="text-lg" aria-hidden="true">🛒</span>
           <span
             class="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white"
-            >2</span
+            >{{ itemCount }}</span
           >
         </button>
       </header>
@@ -168,9 +180,11 @@ const homeVisibleProducts = computed(() => {
             type="button"
             @click="setSelectedCategory(category.id)"
           >
-            <span class="block text-2xl" aria-hidden="true">{{
-              category.icon
-            }}</span>
+            <img
+              :src="category.icon"
+              class="block text-2xl"
+              aria-hidden="true"
+            />
             <span class="mt-2 block text-xs font-bold">{{
               category.name
             }}</span>
@@ -192,7 +206,12 @@ const homeVisibleProducts = computed(() => {
           <article
             v-for="product in homeVisibleProducts"
             :key="product.id"
-            class="flex gap-3 rounded-3xl bg-white p-3 shadow-sm ring-1 ring-slate-200"
+            class="flex cursor-pointer gap-3 rounded-3xl bg-white p-3 text-left shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-emerald-500"
+            role="button"
+            tabindex="0"
+            @click="openProductDetails(product)"
+            @keydown.enter="openProductDetails(product)"
+            @keydown.space.prevent="openProductDetails(product)"
           >
             <div
               class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-4xl"
@@ -212,6 +231,7 @@ const homeVisibleProducts = computed(() => {
                   class="h-9 w-9 rounded-full bg-slate-950 text-lg font-bold text-white"
                   type="button"
                   :aria-label="`Adicionar ${product.name}`"
+                  @click.stop="openProductDetails(product)"
                 >
                   +
                 </button>
@@ -230,7 +250,12 @@ const homeVisibleProducts = computed(() => {
           <article
             v-for="product in featuredProducts"
             :key="product.id"
-            class="flex gap-3 rounded-3xl bg-white p-3 shadow-sm ring-1 ring-slate-200"
+            class="flex cursor-pointer gap-3 rounded-3xl bg-white p-3 text-left shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-emerald-500"
+            role="button"
+            tabindex="0"
+            @click="openProductDetails(product)"
+            @keydown.enter="openProductDetails(product)"
+            @keydown.space.prevent="openProductDetails(product)"
           >
             <div
               class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-4xl"
@@ -250,6 +275,7 @@ const homeVisibleProducts = computed(() => {
                   class="h-9 w-9 rounded-full bg-slate-950 text-lg font-bold text-white"
                   type="button"
                   :aria-label="`Adicionar ${product.name}`"
+                  @click.stop="openProductDetails(product)"
                 >
                   +
                 </button>
@@ -285,5 +311,10 @@ const homeVisibleProducts = computed(() => {
         </a>
       </div>
     </nav>
+
+    <ProductDetailModal
+      :product="selectedProduct"
+      @close="closeProductDetails"
+    />
   </main>
 </template>
