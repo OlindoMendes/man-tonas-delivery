@@ -16,10 +16,10 @@ export type Product = {
 };
 
 const categories: Category[] = [
-  { id: "agua", name: "Água", icon: "💧" },
-  { id: "refrigerante", name: "Refrigerante", icon: "🥤" },
-  { id: "sumo", name: "Sumo", icon: "🧃" },
-  { id: "cerveja", name: "Cerveja", icon: "🍺" },
+  { id: "agua", name: "Águas", icon: "/Icons8/water.png" },
+  { id: "refrigerante", name: "Gasosas", icon: "/Icons8/soft-drink.png" },
+  { id: "sumo", name: "Sumos", icon: "/Icons8/juice.png" },
+  { id: "cerveja", name: "Cervejas", icon: "/Icons8/beer.png" },
 ];
 
 const products: Product[] = [
@@ -395,10 +395,7 @@ const formatPrice = (price: number) =>
   }).format(price);
 
 export const useCatalog = () => {
-  const selectedCategoryId = useState(
-    "catalog-selected-category-id",
-    () => "",
-  );
+  const selectedCategoryId = useState("catalog-selected-category-id", () => "");
 
   const selectedCategory = computed(() =>
     categories.find((category) => category.id === selectedCategoryId.value),
@@ -419,9 +416,7 @@ export const useCatalog = () => {
   );
 
   const categoryById = computed<Record<string, Category>>(() =>
-    Object.fromEntries(
-      categories.map((category) => [category.id, category]),
-    ),
+    Object.fromEntries(categories.map((category) => [category.id, category])),
   );
 
   const setSelectedCategory = (categoryId: string) => {
