@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Product } from "~/composables/useCatalog";
+
 const {
   categories,
   products,
@@ -9,7 +11,19 @@ const {
   formatPrice,
   setSelectedCategory,
   clearSelectedCategory,
-} = useCatalog()
+} = useCatalog();
+
+const { itemCount } = useCart();
+
+const selectedProduct = ref<Product | null>(null);
+
+const openProductDetails = (product: Product) => {
+  selectedProduct.value = product;
+};
+
+const closeProductDetails = () => {
+  selectedProduct.value = null;
+};
 </script>
 
 <template>
@@ -42,7 +56,7 @@ const {
           <span class="text-lg" aria-hidden="true">🛒</span>
           <span
             class="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white"
-            >2</span
+            >{{ itemCount }}</span
           >
         </button>
       </header>
@@ -62,7 +76,9 @@ const {
             <span class="text-3xl" aria-hidden="true">🛒</span>
             <span
               class="text-xs font-black"
-              :class="!selectedCategoryId ? 'text-emerald-300' : 'text-emerald-700'"
+              :class="
+                !selectedCategoryId ? 'text-emerald-300' : 'text-emerald-700'
+              "
             >
               {{ products.length }}
             </span>
@@ -83,7 +99,11 @@ const {
           @click="setSelectedCategory(category.id)"
         >
           <div class="flex items-center justify-between gap-3">
-            <span class="text-3xl" aria-hidden="true">{{ category.icon }}</span>
+            <img
+              :src="category.icon"
+              class="block text-2xl"
+              aria-hidden="true"
+            />
             <span
               class="text-xs font-black"
               :class="
@@ -102,11 +122,17 @@ const {
         </button>
       </section>
 
-      <section class="mt-6 rounded-3xl bg-emerald-50 p-4 ring-1 ring-emerald-100">
+      <section
+        class="mt-6 rounded-3xl bg-emerald-50 p-4 ring-1 ring-emerald-100"
+      >
         <div class="flex items-center justify-between gap-4">
           <div>
-            <p class="text-xs font-black uppercase tracking-wide text-emerald-700">
-              {{ selectedCategory ? "Categoria selecionada" : "Catálogo completo" }}
+            <p
+              class="text-xs font-black uppercase tracking-wide text-emerald-700"
+            >
+              {{
+                selectedCategory ? "Categoria selecionada" : "Catálogo completo"
+              }}
             </p>
             <h2 class="mt-1 text-xl font-black">
               {{ selectedCategory?.name ?? "Todos os produtos" }}
@@ -132,7 +158,12 @@ const {
           <article
             v-for="product in visibleProducts"
             :key="product.id"
-            class="flex gap-3 rounded-3xl bg-white p-3 shadow-sm ring-1 ring-slate-200"
+            class="flex cursor-pointer gap-3 rounded-3xl bg-white p-3 text-left shadow-sm ring-1 ring-slate-200 transition hover:-translate-y-0.5 hover:shadow-md focus-within:ring-2 focus-within:ring-emerald-500"
+            role="button"
+            tabindex="0"
+            @click="openProductDetails(product)"
+            @keydown.enter="openProductDetails(product)"
+            @keydown.space.prevent="openProductDetails(product)"
           >
             <div
               class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl text-4xl"
@@ -166,6 +197,7 @@ const {
                   class="h-9 w-9 rounded-full bg-slate-950 text-lg font-bold text-white"
                   type="button"
                   :aria-label="`Adicionar ${product.name}`"
+                  @click.stop="openProductDetails(product)"
                 >
                   +
                 </button>
@@ -180,7 +212,9 @@ const {
       class="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-md border-t border-slate-200 bg-white/95 px-5 pb-4 pt-3 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] backdrop-blur sm:max-w-2xl lg:hidden"
       aria-label="Navegação principal"
     >
-      <div class="grid grid-cols-4 text-center text-xs font-bold text-slate-500">
+      <div
+        class="grid grid-cols-4 text-center text-xs font-bold text-slate-500"
+      >
         <NuxtLink to="/">
           <span class="block text-xl" aria-hidden="true">⌂</span>
           Início
@@ -199,5 +233,10 @@ const {
         </a>
       </div>
     </nav>
+
+    <ProductDetailModal
+      :product="selectedProduct"
+      @close="closeProductDetails"
+    />
   </main>
 </template>
