@@ -48,17 +48,21 @@ const closeProductDetails = () => {
           </p>
         </div>
 
-        <button
+        <NuxtLink
           class="relative inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200"
-          type="button"
           aria-label="Abrir carrinho"
+          to="/cart"
         >
-          <span class="text-lg" aria-hidden="true">🛒</span>
+          <UIcon
+            name="i-lucide-shopping-bag"
+            class="size-5"
+            aria-hidden="true"
+          />
           <span
             class="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white"
             >{{ itemCount }}</span
           >
-        </button>
+        </NuxtLink>
       </header>
 
       <section class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
@@ -208,31 +212,7 @@ const closeProductDetails = () => {
       </section>
     </section>
 
-    <nav
-      class="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-md border-t border-slate-200 bg-white/95 px-5 pb-4 pt-3 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] backdrop-blur sm:max-w-2xl lg:hidden"
-      aria-label="Navegação principal"
-    >
-      <div
-        class="grid grid-cols-4 text-center text-xs font-bold text-slate-500"
-      >
-        <NuxtLink to="/">
-          <span class="block text-xl" aria-hidden="true">⌂</span>
-          Início
-        </NuxtLink>
-        <NuxtLink class="text-emerald-700" to="/products">
-          <span class="block text-xl" aria-hidden="true">⌕</span>
-          Produtos
-        </NuxtLink>
-        <a href="#">
-          <span class="block text-xl" aria-hidden="true">♡</span>
-          Guardados
-        </a>
-        <a href="#">
-          <span class="block text-xl" aria-hidden="true">☻</span>
-          Conta
-        </a>
-      </div>
-    </nav>
+    <AppBottomNavigation />
 
     <ProductDetailModal
       :product="selectedProduct"
