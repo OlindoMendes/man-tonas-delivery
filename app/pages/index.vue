@@ -56,23 +56,31 @@ const closeProductDetails = () => {
             <span
               class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-100 text-emerald-700"
             >
-              <span aria-hidden="true">⌖</span>
+              <UIcon
+                name="i-lucide-map-pin"
+                class="size-5"
+                aria-hidden="true"
+              />
             </span>
             Luanda, Angola
           </button>
         </div>
 
-        <button
+        <NuxtLink
           class="relative inline-flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200"
-          type="button"
           aria-label="Abrir carrinho"
+          to="/cart"
         >
-          <span class="text-lg" aria-hidden="true">🛒</span>
+          <UIcon
+            name="i-lucide-shopping-bag"
+            class="size-5"
+            aria-hidden="true"
+          />
           <span
             class="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white"
             >{{ itemCount }}</span
           >
-        </button>
+        </NuxtLink>
       </header>
 
       <section
@@ -166,11 +174,11 @@ const closeProductDetails = () => {
           </NuxtLink>
         </div>
 
-        <div class="mt-4 grid grid-cols-4 gap-3 sm:grid-cols-6">
+        <div class="mt-4 grid grid-cols-4 justify-center gap-3 sm:grid-cols-6">
           <button
             v-for="category in categories"
             :key="category.id"
-            class="rounded-2xl p-3 text-center shadow-sm ring-1 transition"
+            class="rounded-2xl p-2 text-center shadow-md ring-1 transition cursor-pointer"
             :class="
               selectedCategoryId === category.id ||
               (!selectedCategoryId && category.id === categories[0]?.id)
@@ -180,11 +188,13 @@ const closeProductDetails = () => {
             type="button"
             @click="setSelectedCategory(category.id)"
           >
-            <img
-              :src="category.icon"
-              class="block text-2xl"
-              aria-hidden="true"
-            />
+            <div class="flex justify-center">
+              <img
+                :src="category.icon"
+                class="flex text-2xl justify-center"
+                aria-hidden="true"
+              />
+            </div>
             <span class="mt-2 block text-xs font-bold">{{
               category.name
             }}</span>
@@ -286,31 +296,7 @@ const closeProductDetails = () => {
       </section>
     </section>
 
-    <nav
-      class="fixed inset-x-0 bottom-0 z-10 mx-auto max-w-md border-t border-slate-200 bg-white/95 px-5 pb-4 pt-3 shadow-[0_-8px_30px_rgba(15,23,42,0.08)] backdrop-blur sm:max-w-2xl lg:hidden"
-      aria-label="Navegação principal"
-    >
-      <div
-        class="grid grid-cols-4 text-center text-xs font-bold text-slate-500"
-      >
-        <a class="text-emerald-700" href="#">
-          <span class="block text-xl" aria-hidden="true">⌂</span>
-          Início
-        </a>
-        <NuxtLink to="/products">
-          <span class="block text-xl" aria-hidden="true">⌕</span>
-          Procurar
-        </NuxtLink>
-        <a href="#">
-          <span class="block text-xl" aria-hidden="true">♡</span>
-          Guardados
-        </a>
-        <a href="#">
-          <span class="block text-xl" aria-hidden="true">☻</span>
-          Conta
-        </a>
-      </div>
-    </nav>
+    <AppBottomNavigation />
 
     <ProductDetailModal
       :product="selectedProduct"
