@@ -66,21 +66,30 @@ const closeProductDetails = () => {
           </button>
         </div>
 
-        <NuxtLink
-          class="relative inline-flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200"
-          aria-label="Abrir carrinho"
-          to="/cart"
-        >
-          <UIcon
-            name="i-lucide-shopping-bag"
-            class="size-5"
-            aria-hidden="true"
-          />
-          <span
-            class="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white"
-            >{{ itemCount }}</span
+        <div class="flex items-center gap-3">
+          <NuxtLink
+            class="relative inline-flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200"
+            to="/profile"
           >
-        </NuxtLink>
+            <UIcon name="i-lucide-user" class="size-5" aria-hidden="true" />
+          </NuxtLink>
+
+          <NuxtLink
+            class="relative inline-flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-sm ring-1 ring-slate-200"
+            aria-label="Abrir carrinho"
+            to="/cart"
+          >
+            <UIcon
+              name="i-lucide-shopping-bag"
+              class="size-5"
+              aria-hidden="true"
+            />
+            <span
+              class="absolute -right-1 -top-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-emerald-600 px-1 text-xs font-bold text-white"
+              >{{ itemCount }}</span
+            >
+          </NuxtLink>
+        </div>
       </header>
 
       <section
