@@ -37,7 +37,12 @@ const closeProductDetails = () => {
             class="inline-flex items-center gap-2 text-sm font-bold text-emerald-700"
             to="/"
           >
-            <span aria-hidden="true">‹</span>
+            <UIcon
+              name="i-lucide-chevron-left"
+              class="size-5"
+              aria-hidden="true"
+            />
+
             Início
           </NuxtLink>
           <h1 class="mt-3 text-3xl font-black tracking-tight sm:text-4xl">

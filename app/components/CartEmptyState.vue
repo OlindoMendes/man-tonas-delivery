@@ -24,7 +24,7 @@ withDefaults(
       class="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-emerald-50 text-4xl"
       aria-hidden="true"
     >
-      🛒
+      <UIcon name="i-lucide-shopping-bag" class="size-5" aria-hidden="true" />
     </div>
     <h2 class="mt-4 text-2xl font-black">{{ title }}</h2>
     <p class="mt-2 text-sm leading-6 text-slate-500">
