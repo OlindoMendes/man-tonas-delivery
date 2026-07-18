@@ -22,7 +22,7 @@ const defaultItems: readonly NavigationItem[] = [
     icon: "i-lucide-shopping-cart",
     to: "/cart",
   },
-  { id: "profile", label: "Perfil", icon: "i-lucide-user" },
+  { id: "profile", label: "Perfil", icon: "i-lucide-user", to: "/profile" },
 ];
 
 const props = defineProps<{
